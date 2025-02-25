@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "cors": "^2.8.5",
+    "process": "^0.11.10",
+    "socket.io-client": "^4.8.1"
+  }
+}

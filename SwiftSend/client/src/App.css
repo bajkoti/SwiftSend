@@ -1,0 +1,121 @@
+/* General body styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #1e3c72, #2a5298);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Main app container styling */
+.app-container {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 1200px;
+  background: #f8f9fa; /* Light background for the app panels */
+  color: black;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Styling for left and right panels */
+.left-panel,
+.right-panel {
+  width: 45%;
+  padding: 20px;
+  background: white;
+  color: black;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Headings alignment */
+h1,
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Peer ID input, file input, and buttons */
+.peer-input,
+.file-input {
+  width: 100%;
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.action-button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background: #0056b3; /* Darker blue for hover state */
+}
+
+.action-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* File list styling */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul li {
+  margin: 10px 0;
+  word-wrap: break-word;
+}
+
+ul li a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+    width: 90%;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .right-panel {
+    margin-bottom: 0;
+  }
+}
