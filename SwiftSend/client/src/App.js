@@ -3,38 +3,34 @@ import io from "socket.io-client";
 import SimplePeer from "simple-peer";
 import "./App.css";
 
-const socket = io("http://localhost:5000"); 
+const socket = io("http://192.168.213.184:5000");
 
 const App = () => {
-  const [peer, setPeer] = useState(null); 
-  const [peerId, setPeerId] = useState(""); 
-  const [targetPeerId, setTargetPeerId] = useState(""); 
-  const [receivedFiles, setReceivedFiles] = useState([]); 
-  const [file, setFile] = useState(null); 
-  const [connected, setConnected] = useState(false); 
+  const [peer, setPeer] = useState(null);
+  const [peerId, setPeerId] = useState("");
+  const [targetPeerId, setTargetPeerId] = useState("");
+  const [receivedFiles, setReceivedFiles] = useState([]);
+  const [file, setFile] = useState(null);
+  const [connected, setConnected] = useState(false);
+  const [dragover, setDragover] = useState(false);
 
-  
   useEffect(() => {
-    
     socket.on("connect", () => {
       console.log("Connected to signaling server. Socket ID:", socket.id);
     });
 
-    
     socket.on("peer-id", (id) => {
       console.log("Your Peer ID:", id);
       setPeerId(id);
     });
 
-    
     socket.on("signal", ({ signal, from }) => {
       console.log(`Signal received from Peer ${from}`);
       if (peer) {
-        peer.signal(signal); 
+        peer.signal(signal);
       }
     });
 
-    
     socket.on("connect_error", (err) => {
       console.error("Socket connection error:", err.message);
     });
@@ -131,7 +127,29 @@ const App = () => {
     if (selectedFile) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setFile(event.target.result); 
+        setFile(event.target.result);
+      };
+      reader.readAsArrayBuffer(selectedFile);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragover(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragover(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragover(false);
+    const selectedFile = e.dataTransfer.files[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setFile(event.target.result);
       };
       reader.readAsArrayBuffer(selectedFile);
     }
@@ -139,35 +157,41 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <div className="left-panel">
-        <h1>SwiftSend - File Sharing</h1>
-        <p>
-          Your Peer ID: <strong>{peerId || "Loading..."}</strong>
-        </p>
-        <input
-          type="text"
-          placeholder="Enter Target Peer ID"
-          value={targetPeerId}
-          onChange={(e) => setTargetPeerId(e.target.value)}
-          className="peer-input"
-        />
-        <button onClick={createPeer} className="action-button">
-          Create Peer
-        </button>
-        <button onClick={joinPeer} className="action-button">
-          Join Peer
-        </button>
+      <div className="header">SwiftSend - File Sharing</div>
+      <div className="peer-id">
+        Your Peer ID: <strong>{peerId || "Loading..."}</strong>
+      </div>
+      <input
+        type="text"
+        placeholder="Enter Target Peer ID"
+        value={targetPeerId}
+        onChange={(e) => setTargetPeerId(e.target.value)}
+        className="peer-input"
+      />
+      <button onClick={createPeer} className="action-button">
+        Create Peer
+      </button>
+      <button onClick={joinPeer} className="action-button">
+        Join Peer
+      </button>
+      <div
+        className={`file-drop-area ${dragover ? "dragover" : ""}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <p>Drag & drop a file here or click to select</p>
         <input
           type="file"
           onChange={handleFileChange}
           className="file-input"
           disabled={!connected}
         />
-        <button onClick={sendFile} className="action-button" disabled={!connected}>
-          Send File
-        </button>
       </div>
-      <div className="right-panel">
+      <button onClick={sendFile} className="action-button" disabled={!connected || !file}>
+        Send File
+      </button>
+      <div className="received-files">
         <h2>Received Files</h2>
         <ul>
           {receivedFiles.length === 0 ? (
