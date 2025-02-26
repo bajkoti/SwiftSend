@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 import SimplePeer from "simple-peer";
 import "./App.css";
 
 const socket = io("http://192.168.213.184:5000");
+
+socket.on("connect", () => console.log("Connected!"));
+socket.on("connect_error", (err) => console.error("Connection Error:", err));
 
 const App = () => {
   const [peer, setPeer] = useState(null);
