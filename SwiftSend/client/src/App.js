@@ -5,7 +5,9 @@ import SimplePeer from 'simple-peer';
 import { FiUpload, FiCopy, FiFile, FiDownload, FiX } from 'react-icons/fi';
 import './App.css';
 
-const socket = io('http://localhost:5000');
+const socket = io('http://localhost:5000', {
+  transports: ["websocket"], // Force WebSockets instead of polling
+});
 
 const App = () => {
   // State Management
