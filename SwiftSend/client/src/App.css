@@ -1,191 +1,145 @@
-/* General body styling */
+/* App.css */
+:root {
+  --bg-main: #1f1764;
+  --bg-secondary: #281f20;
+  --accent-1: #2a2122;
+  --accent-2: #271d1e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --border-color: #313035;
+}
+
 body {
+  margin: 0;
   font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
 }
 
-/* Dynamic background animation */
-@keyframes gradientBackground {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-body::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #00bfff, #8a2be2);
-  opacity: 0.2;
-  z-index: -1;
-  animation: gradientBackground 10s ease infinite;
-}
-
-/* Main app container styling */
 .app-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  max-width: 600px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-/* Header styling */
-.header {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #00bfff;
-}
-
-/* Peer ID section */
-.peer-id {
-  font-size: 14px;
-  margin-bottom: 20px;
-  opacity: 0;
-  animation: fadeIn 1s ease forwards;
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
-
-/* Form inputs */
-.peer-input,
-.file-input {
-  width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  color: white;
-  font-size: 14px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.peer-input:focus,
-.file-input:focus {
-  border-color: #00bfff;
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
-  outline: none;
-}
-
-/* Buttons */
-.action-button {
-  width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  background: linear-gradient(135deg, #00bfff, #8a2be2);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.action-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 191, 255, 0.4);
-}
-
-.action-button:disabled {
-  background: #555;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* File selection area */
-.file-drop-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 20px;
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  margin: 20px 0;
-  transition: border-color 0.3s ease;
-}
-
-.file-drop-area.dragover {
-  border-color: #00bfff;
-}
-
-.file-drop-area p {
-  margin: 0;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* Received files list */
-.received-files {
-  width: 100%;
-  margin-top: 20px;
-}
-
-.received-files ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.received-files li {
+.app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  margin: 10px 0;
-  animation: slideUp 0.5s ease;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
 }
 
-.received-files li a {
-  color: #00bfff;
-  text-decoration: none;
-  font-weight: 600;
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.received-files li a:hover {
-  text-decoration: underline;
+.peer-id-box {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .app-container {
-    width: 95%;
-    padding: 15px;
-  }
+.action-section {
+  background: var(--accent-1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
 
-  .header {
-    font-size: 20px;
-  }
+input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 6px;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--accent-2);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.action-btn:hover {
+  opacity: 0.9;
+}
+
+.file-dropzone {
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  background: var(--bg-secondary);
+}
+
+.send-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--accent-2);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.received-files {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--accent-1);
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+}
+
+.cyber-input {
+  background: #001a12;
+  border: 1px solid #00ff9d;
+  color: #00ff9d;
+  padding: 0.8rem;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.category-tabs button {
+  background: #002218;
+  border: 1px solid #00ff9d;
+  color: #00ff9d;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.category-tabs button.active {
+  background: #00ff9d;
+  color: #000;
 }
