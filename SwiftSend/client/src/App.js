@@ -16,6 +16,7 @@ const App = () => {
   const [targetPeerId, setTargetPeerId] = useState('');
   const [receivedFiles, setReceivedFiles] = useState([]);
   const [file, setFile] = useState(null);
+  const [fileObj, setFileObj] = useState(null);
   const [connected, setConnected] = useState(false);
   const [dragover, setDragover] = useState(false);
   const [showReceived, setShowReceived] = useState(false);
@@ -54,8 +55,12 @@ const App = () => {
       socket.emit('signal', { signal, target: targetPeerId });
     });
 
-    newPeer.on('connect', () => setConnected(true));
+    newPeer.on('connect', () => {
+      setConnected(true);
+      setShowReceived(true); // Ensure received files section is shown
+    });
     newPeer.on('data', data => {
+      // For a complete implementation, consider a protocol to handle file chunking if needed.
       setReceivedFiles(prev => [...prev, URL.createObjectURL(new Blob([data]))]);
     });
     
@@ -71,28 +76,36 @@ const App = () => {
       socket.emit('signal', { signal, target: targetPeerId });
     });
 
-    newPeer.on('connect', () => setConnected(true));
+    newPeer.on('connect', () => {
+      setConnected(true);
+      setShowReceived(true);
+    });
     newPeer.on('data', data => {
       setReceivedFiles(prev => [...prev, URL.createObjectURL(new Blob([data]))]);
     });
     
     newPeer.on('error', err => console.error('Peer error:', err));
     setPeer(newPeer);
-    setShowReceived(true);
   };
 
   // File Handling
-  const sendFile = () => {
-    if (peer && file) peer.send(file);
-    else alert('No connection or file selected!');
-  };
-
   const handleFileChange = e => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
+      setFileObj(selectedFile);
       const reader = new FileReader();
       reader.onload = (event) => setFile(event.target.result);
       reader.readAsArrayBuffer(selectedFile);
+    }
+  };
+
+  const sendFile = () => {
+    if (peer && file) {
+      // For now, the file is sent as a single ArrayBuffer.
+      // For larger files, consider splitting the file into chunks and reassembling on the receiver side.
+      peer.send(file);
+    } else {
+      alert('No connection or file selected!');
     }
   };
 
@@ -180,7 +193,7 @@ const App = () => {
               onDrop={handleDrop}
             >
               <FiUpload className="upload-icon" />
-              <p>SELECTFILE</p>
+              <p>SELECT FILE</p>
               <input
                 type="file"
                 onChange={handleFileChange}
